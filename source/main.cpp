@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "BiconnectedComponent.h"
+#include <map>
 
 using namespace std;
 
@@ -10,12 +11,13 @@ int main(int argc, char ** argv){
 		graph = (char*)argv[1];
 	}
 	else {
-		graph = (char*)"../dataset/test.txt";
+		graph = (char*)"../dataset/test2.txt";
 	}
 
-	BiconnectedComponent * BC = new BiconnectedComponent(graph); 
-	BC->find_biconn_com();
-	BC->show_result();
+	BiconnectedComponent<char> BC;
+	BC.load_graph(graph);
+	BC.find_biconn_com();
+	BC.show_result();
 
 	return 0;
 }
