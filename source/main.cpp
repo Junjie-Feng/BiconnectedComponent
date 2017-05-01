@@ -11,7 +11,7 @@ int main(int argc, char ** argv){
 		graph = (char*)argv[1];
 	}
 	else {
-		graph = (char*)"../dataset/test2.txt";
+		graph = (char*)"../dataset/example2.txt";
 	}
 
 	BiconnectedComponent<char> BC;

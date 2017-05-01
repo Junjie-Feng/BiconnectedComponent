@@ -126,6 +126,8 @@ public:
 				//if the edge e is in this component
 				if(vertices.end()!=find(vertices.begin(),vertices.end(),u)){
 					e->visited = true;
+					
+					// cout<<e->v1<"\t"<<e->v2<<endl;
 					compon.push_back(e);
 
 					if(!marked[u])				
