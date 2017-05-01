@@ -14,7 +14,6 @@ template <class V>
 class BiconnectedComponent{
 public:
 	BiconnectedComponent(){
-		// load_graph(graph);
 		depth =0;
 	}
 	~BiconnectedComponent(){}
@@ -48,27 +47,23 @@ public:
 		preorder[v] = depth;
 		low[v] = depth;
 		st.push(v);
-		bool brige = true;
 
 		if(graphs[v].empty()) return;
 		for(int i=0;i<graphs[v].size();i++){
 			edge* e = graphs[v][i];
 			V u = e->v1==v?e->v2:e->v1;
-			brige = true;
+			
 			if(!e->visited){ // avoid visiting parent vertex
 				e->visited= true;
 				
 				if(!preorder[u]){ // vertex u is unvisited
-
-					//vertex v should not be leaf vertex
-					// leaf[v] = false;
 					
 					dfs_tarjan(u);
 					if(low[u]<low[v])
 						low[v]=low[u];
 
 					//cut certex
-					if(low[u]>=preorder[v]){
+					if(low[u]==preorder[v]){
 
 						cutCnt[v]++;
 						vector<V> tmp;
@@ -80,14 +75,20 @@ public:
 						while(st.top() != u){
 							st.pop();
 							tmp.push_back(st.top());
-							brige= false;
 						}
 						st.pop();
 		
-						if(brige)
-							bridges.push_back(e);
 						components.push_back(tmp);
 
+					}
+					if(low[u]>preorder[v]){
+						cutCnt[v]++;
+						vector<V> tmp;
+						tmp.push_back(v);
+						tmp.push_back(st.top());
+						st.pop();
+						components.push_back(tmp);
+						bridges.push_back(e);
 					}
 
 				}
@@ -105,11 +106,6 @@ public:
 			}
 		}
 
-		//calculate the leaf vertex of the tree
-		// map<V, bool> :: iterator it1=leaf.begin();
-		// for(;it1!=leaf.end();it1++)
-		// 	if(it1->second)
-		// 		leaves.push_back(it1->first);
 	}
 
 
@@ -127,7 +123,6 @@ public:
 				if(vertices.end()!=find(vertices.begin(),vertices.end(),u)){
 					e->visited = true;
 					
-					// cout<<e->v1<"\t"<<e->v2<<endl;
 					compon.push_back(e);
 
 					if(!marked[u])				
@@ -139,7 +134,6 @@ public:
 
 	void cal_edge_biconn_com(){
 		//set edges as unvisited
-		// map<V,vector<edge*> >::iterator it;
 		for(const auto& it : graphs){
 			for(int i=0;i<it.second.size();i++){
 				it.second[i]->visited = false;
@@ -230,8 +224,6 @@ public:
 	  			low[y]=0;
 	  			cutCnt[x]=0;
 	  			cutCnt[y]=0;
-	  			// leaf[x] = true;
-	  			// leaf[y] = true;
 	  			marked[x]=false;
 	  			marked[y]=false;
 	  		}
@@ -253,13 +245,11 @@ private:
 	int depth;
 	stack<V> st;
 	map<V, int> cutCnt;
-	// map<int, bool> leaf;
 	
 	vector<vector<V> > components;
 	vector<vector<edge *> > componentEdges;
 	vector<V> cutVertices;
 	vector<edge *> bridges;
-	// vector<int> leaves;
 
 
 
