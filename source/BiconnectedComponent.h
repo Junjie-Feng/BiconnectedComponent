@@ -103,7 +103,6 @@ public:
 					low[v] = preorder[u];
 			}
 		}
-
 	}
 
 	void dfs(int v,vector<edge*>& compon,map<int,vector<edge *> >& graph){
